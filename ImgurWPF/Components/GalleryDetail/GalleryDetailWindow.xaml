@@ -1,0 +1,133 @@
+﻿<Window
+    x:Class="ImgurWPF.Components.GalleryDetail.GalleryDetailWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:comment="clr-namespace:ImgurWPF.Components.Comment"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:favorite="clr-namespace:ImgurWPF.Components.Favorite"
+    xmlns:local="clr-namespace:ImgurWPF.Components.GalleryDetail"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vote="clr-namespace:ImgurWPF.Components.Vote"
+    Title="GalleryDetailWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid Margin="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="0,0,16,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Border
+                Grid.Row="0"
+                Padding="8"
+                BorderBrush="LightGray"
+                BorderThickness="1">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding ImgesLinks}">
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Margin" Value="0,0,0,12" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="LightGray" BorderThickness="1">
+                                    <Image
+                                        MaxWidth="280"
+                                        MaxHeight="280"
+                                        Source="{Binding}"
+                                        Stretch="Uniform" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+
+            <StackPanel
+                Grid.Row="1"
+                Margin="0,16,0,0"
+                VerticalAlignment="Top">
+                <vote:VoteComponent
+                    Margin="0,0,0,8"
+                    Command="{Binding DataContext.VoteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                    Score="{Binding DataContext.Score, RelativeSource={RelativeSource AncestorType=Window}}"
+                    Vote="{Binding DataContext.Vote, RelativeSource={RelativeSource AncestorType=Window}}" />
+                <favorite:FavoriteComponent Command="{Binding DataContext.FavoriteCommand, RelativeSource={RelativeSource AncestorType=Window}}" IsFavorite="{Binding DataContext.Favorite, RelativeSource={RelativeSource AncestorType=Window}}" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border
+                Grid.Row="0"
+                Margin="0,0,0,16"
+                Padding="12"
+                BorderBrush="LightGray"
+                BorderThickness="1">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,8"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Text="留言" />
+                    <TextBox
+                        MinHeight="80"
+                        AcceptsReturn="True"
+                        Text="{Binding CommentInput}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto" />
+                    <Button
+                        Width="96"
+                        Margin="0,8,0,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding PostCommentCommand}"
+                        Content="送出留言" />
+                </StackPanel>
+            </Border>
+
+            <Border
+                Grid.Row="1"
+                Padding="8"
+                BorderBrush="LightGray"
+                BorderThickness="1">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="container" ItemsSource="{Binding Comments}">
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Margin" Value="0,0,0,8" />
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <comment:CommentComponent />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

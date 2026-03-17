@@ -1,0 +1,10 @@
+# Build output
+bin/
+obj/
+.vs/
+
+# NuGet packages
+packages/
+
+# Local secrets
+ImgurWPF/App.secrets.config

@@ -1,0 +1,115 @@
+﻿<UserControl
+    x:Class="ImgurWPF.Components.Vote.VoteComponent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="36"
+    d:DesignWidth="100"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!--  按鈕基礎樣式  -->
+        <Style x:Key="VoteButtonBase" TargetType="Button">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F0F0F0" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E0E0E0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--  向上投票按鈕  -->
+        <Style
+            x:Key="UpvoteButton"
+            BasedOn="{StaticResource VoteButtonBase}"
+            TargetType="Button">
+            <Setter Property="Foreground" Value="#757575" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#1BB76E" />
+                </Trigger>
+                <DataTrigger Binding="{Binding Vote}" Value="UP">
+                    <Setter Property="Foreground" Value="#1BB76E" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  向下投票按鈕  -->
+        <Style
+            x:Key="DownvoteButton"
+            BasedOn="{StaticResource VoteButtonBase}"
+            TargetType="Button">
+            <Setter Property="Foreground" Value="#757575" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#E74C3C" />
+                </Trigger>
+                <DataTrigger Binding="{Binding Vote}" Value="DOWN">
+                    <Setter Property="Foreground" Value="#E74C3C" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  分數文字樣式  -->
+        <Style x:Key="ScoreText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#212121" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="MinWidth" Value="30" />
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+        <!--  向上投票  -->
+        <Button
+            x:Name="UpvoteButton"
+            Command="{Binding UpVoteCommand}"
+            Content="&#xE70E;"
+            Style="{StaticResource UpvoteButton}"
+            ToolTip="Upvote" />
+
+        <!--  分數顯示  -->
+        <TextBlock
+            Margin="4,0"
+            Style="{StaticResource ScoreText}"
+            Text="{Binding score}" />
+
+        <!--  向下投票  -->
+        <Button
+            x:Name="DownvoteButton"
+            Margin="0,0,0,0"
+            Command="{Binding DownVoteCommand}"
+            Content="&#xE70D;"
+            Style="{StaticResource DownvoteButton}"
+            ToolTip="Downvote" />
+    </StackPanel>
+</UserControl>
