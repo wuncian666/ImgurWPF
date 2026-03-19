@@ -17,8 +17,8 @@ namespace ImgurWPF.Components.Pagination
         public PaginationComponent()
         {
             InitializeComponent();
-            this.PaginationViewModel = new PaginationViewModel();
-            DataContext = PaginationViewModel;
+            //this.PaginationViewModel = new PaginationViewModel();
+            //DataContext = PaginationViewModel;
         }
 
         public ICommand Command
@@ -54,7 +54,8 @@ namespace ImgurWPF.Components.Pagination
                 new PropertyMetadata((d, e) =>
                 {
                     var control = (PaginationComponent)d;
-                    control.PaginationViewModel.SetTotalCount((int)e.NewValue);
+                    var viewmodel = (PaginationViewModel)control.DataContext;
+                    viewmodel.SetTotalCount((int)e.NewValue);
                 }));
 
         //public void PageDisplay(PageInfo info)

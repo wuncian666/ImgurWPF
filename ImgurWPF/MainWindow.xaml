@@ -7,11 +7,23 @@
     xmlns:local="clr-namespace:ImgurWPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pagination="clr-namespace:ImgurWPF.Components.Pagination"
+    xmlns:paginationViewModel="clr-namespace:ImgurWPF.Components.Pagination"
     xmlns:search="clr-namespace:ImgurWPF.Components.Search"
+    xmlns:searchViewModel="clr-namespace:ImgurWPF.Components.Search"
     Title="MainWindow"
     Width="800"
     Height="450"
     mc:Ignorable="d">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type searchViewModel:SearchViewModel}">
+            <search:SearchComponent Command="{Binding DataContext.SearchCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type paginationViewModel:PaginationViewModel}">
+            <pagination:PaginationComponent Command="{Binding DataContext.SelectedPageCommand, RelativeSource={RelativeSource AncestorType=Window}}" TotalItemsCount="{Binding DataContext.TotalItemsCount, RelativeSource={RelativeSource AncestorType=Window}}" />
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -20,7 +32,10 @@
         </Grid.RowDefinitions>
 
         <!--  搜尋  -->
-        <search:SearchComponent Grid.Row="0" Command="{Binding DataContext.SearchCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+        <StackPanel Grid.Row="0">
+            <ContentControl Content="{Binding SearchViewModel}" />
+        </StackPanel>
+        <!--<search:SearchComponent  Command="{Binding DataContext.SearchCommand, RelativeSource={RelativeSource AncestorType=Window}}" />-->
 
         <!--  顯示 image item  -->
         <ScrollViewer
@@ -48,9 +63,13 @@
         </ScrollViewer>
 
         <!--  pagination  -->
-        <pagination:PaginationComponent
+        <!--<pagination:PaginationComponent
             Grid.Row="2"
             Command="{Binding DataContext.SelectedPageCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-            TotalItemsCount="{Binding DataContext.TotalItemsCount, RelativeSource={RelativeSource AncestorType=Window}}" />
+            TotalItemsCount="{Binding DataContext.TotalItemsCount, RelativeSource={RelativeSource AncestorType=Window}}" />-->
+
+        <StackPanel Grid.Row="2">
+            <ContentControl Content="{Binding PaginationViewModel}" />
+        </StackPanel>
     </Grid>
 </Window>

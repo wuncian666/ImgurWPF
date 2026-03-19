@@ -14,8 +14,8 @@ namespace ImgurWPF.Components.Search
         public SearchComponent()
         {
             InitializeComponent();
-            SearchViewModel = new SearchViewModel(this);
-            DataContext = SearchViewModel;
+            //SearchViewModel = new SearchViewModel(this);
+            //DataContext = SearchViewModel;
         }
 
         public ICommand Command
@@ -29,12 +29,11 @@ namespace ImgurWPF.Components.Search
                 nameof(Command),
                 typeof(ICommand),
                 typeof(SearchComponent),
-                new PropertyMetadata(null));
-
-        public void SearchRequest(SearchParamsDTO searchParams)
-        {
-            // xaml 綁定的 command 會執行
-            Command?.Execute(searchParams);
-        }
+                new PropertyMetadata((d, e) =>
+                {
+                    var control = (SearchComponent)d;
+                    var dataContext = (SearchViewModel)control.DataContext;
+                    dataContext.ParentBindingComment = (ICommand)e.NewValue;
+                }));
     }
 }

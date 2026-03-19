@@ -1,5 +1,8 @@
 ﻿using ImgurAPI.Models;
+using IOCContainer;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Windows;
 using System.Windows.Input;
 using TodoList;
 using static ImgurWPF.Components.Search.SearchContract;
@@ -23,11 +26,14 @@ namespace ImgurWPF.Components.Search
         public string Query { get; set; }
 
         public ICommand SearchCommand { get; set; }
-
+        public ICommand ParentBindingComment { get; set; }
         private readonly ISearchPresenter presenter;
 
-        public SearchViewModel(SearchComponent view)
+        public SearchViewModel()
         {
+            IMVPFactory factory = App.Services.GetService<IMVPFactory>();
+            this.presenter = factory.Create<ISearchView, ISearchPresenter>(this);
+
             SearchCommand = new RelayCommand(() =>
             {
                 var searchParams = new SearchParamsDTO(
@@ -35,7 +41,9 @@ namespace ImgurWPF.Components.Search
                     this.Window,
                     this.Page,
                     this.Query);
-                view.SearchRequest(searchParams);
+
+                // 讓父元件去執行搜尋
+                ParentBindingComment?.Execute(searchParams);
             });
         }
 

@@ -9,6 +9,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TodoList;
+using static ImgurWPF.Components.Pagination.PaginationContract;
+using static ImgurWPF.Components.Search.SearchContract;
 using static ImgurWPF.Contracts.GalleryContract;
 
 namespace ImgurWPF.ViewModels
@@ -46,8 +48,14 @@ namespace ImgurWPF.ViewModels
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GalleryViewModel(IMVPFactory mvpFactory)
+        public ISearchView SearchViewModel { get; } 
+        public IPaginationView PaginationViewModel { get; set; }
+
+        public GalleryViewModel(ISearchView searchViewModel, IPaginationView paginationViewModel, IMVPFactory mvpFactory)
         {
+            this.SearchViewModel = searchViewModel;
+            this.PaginationViewModel = paginationViewModel;
+
             this.CurrentPageItems = new ObservableCollection<GalleryItemViewModel>();
 
             this.Presenter = mvpFactory.Create<IGalleryView, IGalleryPresenter>(this);
